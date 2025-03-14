@@ -117,7 +117,7 @@ function techTicked() {
   techNodes.attr('transform', d => `translate(${Math.max(20, Math.min(techWidth - 20, d.x))},${Math.max(20, Math.min(techHeight - 20, d.y))})`);
 }
 
-// D3.js Voronoi Stippling para Blog
+// D3.js Puntos Dinámicos para Blog (sin Voronoi)
 const blogSvg = d3.select('#blog-svg');
 const blogWidth = 300;
 const blogHeight = 200;
@@ -148,9 +148,6 @@ function blogTicked() {
     .attr('cx', d => Math.max(2, Math.min(blogWidth - 2, d.x)))
     .attr('cy', d => Math.max(2, Math.min(blogHeight - 2, d.y)));
 }
-
-const voronoi = d3.voronoi()
-  .extent([[0, 0], [blogWidth, blogHeight]]);
 
 blogSvg.on('mousemove', function(event) {
   const [mx, my] = d3.pointer(event);
