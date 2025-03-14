@@ -143,6 +143,7 @@ const blogNodes = blogSvg.selectAll('circle')
   .attr('fill', '#00d4ff');
 
 function blogTicked() {
+  console.log('Blog simulation ticked'); // Depuración
   blogNodes
     .attr('cx', d => Math.max(2, Math.min(blogWidth - 2, d.x)))
     .attr('cy', d => Math.max(2, Math.min(blogHeight - 2, d.y)));
@@ -198,3 +199,4 @@ window.addEventListener('resize', () => {
 
 initParticles();
 animateParticles();
+console.log('Scripts loaded'); // Depuración
