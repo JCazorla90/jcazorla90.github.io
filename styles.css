@@ -46,36 +46,26 @@ h2 {
   margin-bottom: 20px;
 }
 
-.about, .tech, .connect, .stats, .projects {
+.about, .projects {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
 }
 
-.about p, .tech img, .connect a, .projects .project-card {
+.about p, .projects .project-card {
   margin: 10px;
 }
 
-.tech img {
-  transition: transform 0.3s;
+#tech, #connect {
+  text-align: center;
 }
 
-.tech img:hover {
-  transform: scale(1.2);
-}
-
-.connect a img {
-  filter: grayscale(50%);
-  transition: filter 0.3s;
-}
-
-.connect a img:hover {
-  filter: grayscale(0%);
-}
-
-.stats img {
-  max-width: 100%;
+#tech-svg, #connect-svg {
+  display: block;
+  margin: 0 auto;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
 }
 
 #blog {
@@ -110,6 +100,10 @@ h2 {
   text-decoration: none;
 }
 
+.stats img {
+  max-width: 100%;
+}
+
 footer {
   text-align: center;
   padding: 20px;
@@ -135,4 +129,5 @@ footer img {
   header h3 { font-size: 1.2em; }
   h2 { font-size: 1.5em; }
   .projects .project-card { width: 100%; }
+  #tech-svg, #connect-svg { height: 200px; }
 }
