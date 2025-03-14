@@ -117,75 +117,6 @@ function techTicked() {
   techNodes.attr('transform', d => `translate(${Math.max(20, Math.min(techWidth - 20, d.x))},${Math.max(20, Math.min(techHeight - 20, d.y))})`);
 }
 
-// Voronoi Stippling para Blog
-const blogSvg = d3.select('#blog-svg');
-const width = 300;
-const height = 300;
-
-const androidSvg = `
-<svg width="300" height="300" viewBox="0 0 100 100">
-  <g transform="translate(50, 50)">
-    <circle cx="0" cy="-20" r="20" fill="#00d4ff" />
-    <rect x="-15" y="0" width="30" height="40" fill="#00d4ff" />
-    <line x1="-10" y1="0" x2="-10" y2="-20" stroke="#00d4ff" stroke-width="5" />
-    <line x1="10" y1="0" x2="10" y2="-20" stroke="#00d4ff" stroke-width="5" />
-    <line x1="-10" y1="40" x2="-20" y2="60" stroke="#00d4ff" stroke-width="5" />
-    <line x1="10" y1="40" x2="20" y2="60" stroke="#00d4ff" stroke-width="5" />
-  </g>
-</svg>
-`;
-
-blogSvg.html(androidSvg);
-
-const context = d3.select('#blog-svg').append('canvas')
-  .attr('width', width)
-  .attr('height', height)
-  .style('position', 'absolute')
-  .style('top', 0)
-  .style('left', 0)
-  .node().getContext('2d');
-
-const image = new Image();
-image.src = 'data:image/svg+xml,' + encodeURIComponent(androidSvg);
-image.onload = function() {
-  context.drawImage(image, 0, 0, width, height);
-
-  const pixels = context.getImageData(0, 0, width, height);
-  const data = pixels.data;
-
-  const points = [];
-  for (let y = 0; y < height; y += 2) {
-    for (let x = 0; x < width; x += 2) {
-      const i = (y * width + x) * 4;
-      const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3;
-      if (brightness > 100) {
-        points.push([x, y]);
-      }
-    }
-  }
-
-  const delaunay = d3.Delaunay.from(points);
-  const voronoi = delaunay.voronoi([0, 0, width, height]);
-
-  blogSvg.selectAll('path')
-    .data(voronoi.cellPolygons())
-    .enter()
-    .append('path')
-    .attr('d', d => "M" + d.join("L") + "Z")
-    .attr('fill', 'none')
-    .attr('stroke', '#007bff')
-    .attr('stroke-width', 0.5);
-
-  blogSvg.selectAll('circle')
-    .data(points)
-    .enter()
-    .append('circle')
-    .attr('cx', d => d[0])
-    .attr('cy', d => d[1])
-    .attr('r', 1)
-    .attr('fill', '#007bff');
-};
-
 // Funciones de arrastre (solo para Tech)
 function dragStarted(event, d) {
   if (!event.active) techSimulation.alphaTarget(0.3).restart();
@@ -202,6 +133,44 @@ function dragEnded(event, d) {
   if (!event.active) techSimulation.alphaTarget(0);
   d.fx = null;
   d.fy = null;
+}
+
+// Cargar las últimas entradas del blog desde el feed JSON
+function loadBlogPosts(json) {
+  const blogPostsContainer = document.getElementById('blog-posts');
+  if (!json.feed.entry) {
+    blogPostsContainer.innerHTML = '<p>No se encontraron entradas recientes.</p>';
+    return;
+  }
+
+  const entries = json.feed.entry.slice(0, 3); // Aseguramos solo 3 entradas
+  entries.forEach(entry => {
+    // Obtener el título
+    const title = entry.title.$t;
+
+    // Obtener el enlace (buscamos el enlace con rel="alternate")
+    let link = '';
+    for (let j = 0; j < entry.link.length; j++) {
+      if (entry.link[j].rel === 'alternate') {
+        link = entry.link[j].href;
+        break;
+      }
+    }
+
+    // Obtener un extracto del contenido (si existe)
+    const summary = entry.summary ? entry.summary.$t : 'Sin descripción disponible.';
+    const maxLength = 100; // Límite de caracteres para el extracto
+    let shortSummary = summary.length > maxLength ? summary.substring(0, maxLength) + '...' : summary;
+
+    // Crear la tarjeta del blog
+    const blogCard = document.createElement('div');
+    blogCard.className = 'blog-card';
+    blogCard.innerHTML = `
+      <h3><a href="${link}" target="_blank">${title}</a></h3>
+      <p>${shortSummary}</p>
+    `;
+    blogPostsContainer.appendChild(blogCard);
+  });
 }
 
 // Inicializar y animar
