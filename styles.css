@@ -51,7 +51,7 @@ h2 {
   font-weight: 700;
 }
 
-.about-content, .projects-grid, .stats-grid {
+.about-content, .projects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
@@ -127,7 +127,7 @@ h2 {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.project-card, .stats-grid img {
+.project-card {
   background: #2e2e4d;
   padding: 20px;
   border-radius: 8px;
@@ -150,8 +150,52 @@ h2 {
   text-decoration: none;
 }
 
+#stats {
+  position: relative;
+}
+
 .stats-grid {
-  justify-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.stats-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.stats-grid img {
+  background: #2e2e4d;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+}
+
+#mage-sprite {
+  position: absolute;
+  width: 32px; /* Ajustado al tamaño del sprite */
+  height: 48px; /* Ajustado al tamaño del sprite */
+  animation: moveMage 10s infinite linear;
+  background: none;
+  padding: 0;
+  box-shadow: none;
+  image-rendering: pixelated; /* Mantiene el estilo pixelart nítido */
+}
+
+@keyframes moveMage {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(200px, 0); }
+  50% { transform: translate(200px, 100px); }
+  75% { transform: translate(0, 100px); }
+  100% { transform: translate(0, 0); }
 }
 
 footer {
@@ -162,6 +206,13 @@ footer {
   font-style: italic;
 }
 
+.yoda-gif {
+  width: 200px;
+  max-width: 100%;
+  height: auto;
+  margin-top: 20px;
+}
+
 #particles {
   position: absolute;
   top: 0;
@@ -169,7 +220,7 @@ footer {
   width: 100%;
   height: 100%;
   z-index: -2;
-  opacity: 0.3; /* Reducimos opacidad para un look profesional */
+  opacity: 0.3;
 }
 
 @media (max-width: 768px) {
@@ -179,4 +230,6 @@ footer {
   .project-card { width: 100%; }
   #tech-svg { height: 200px; }
   .blog-container { flex-direction: column; }
+  #mage-sprite { width: 24px; height: 36px; }
+  .yoda-gif { width: 150px; }
 }
