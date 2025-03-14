@@ -117,51 +117,75 @@ function techTicked() {
   techNodes.attr('transform', d => `translate(${Math.max(20, Math.min(techWidth - 20, d.x))},${Math.max(20, Math.min(techHeight - 20, d.y))})`);
 }
 
-// D3.js Puntos Dinámicos para Blog (sin Voronoi)
+// Voronoi Stippling para Blog (adaptado de ObservableHQ)
 const blogSvg = d3.select('#blog-svg');
-const blogWidth = 300;
-const blogHeight = 200;
+const width = 300;
+const height = 300;
 
-const blogPoints = d3.range(100).map(() => ({
-  x: Math.random() * blogWidth,
-  y: Math.random() * blogHeight,
-  vx: (Math.random() - 0.5) * 2,
-  vy: (Math.random() - 0.5) * 2
-}));
+const androidSvg = `
+<svg width="300" height="300" viewBox="0 0 100 100">
+  <g transform="translate(50, 50)">
+    <circle cx="0" cy="-20" r="20" fill="#00d4ff" /> <!-- Cabeza -->
+    <rect x="-15" y="0" width="30" height="40" fill="#00d4ff" /> <!-- Cuerpo -->
+    <line x1="-10" y1="0" x2="-10" y2="-20" stroke="#00d4ff" stroke-width="5" /> <!-- Brazo izquierdo -->
+    <line x1="10" y1="0" x2="10" y2="-20" stroke="#00d4ff" stroke-width="5" /> <!-- Brazo derecho -->
+    <line x1="-10" y1="40" x2="-20" y2="60" stroke="#00d4ff" stroke-width="5" /> <!-- Pierna izquierda -->
+    <line x1="10" y1="40" x2="20" y2="60" stroke="#00d4ff" stroke-width="5" /> <!-- Pierna derecha -->
+  </g>
+</svg>
+`;
 
-const blogSimulation = d3.forceSimulation(blogPoints)
-  .force('collide', d3.forceCollide().radius(3))
-  .force('x', d3.forceX(d => d.x).strength(0.1))
-  .force('y', d3.forceY(d => d.y).strength(0.1))
-  .on('tick', blogTicked);
+blogSvg.html(androidSvg);
 
-const blogNodes = blogSvg.selectAll('circle')
-  .data(blogPoints)
-  .enter()
-  .append('circle')
-  .attr('r', 2)
-  .attr('fill', '#00d4ff');
+const context = d3.select('#blog-svg').append('canvas')
+  .attr('width', width)
+  .attr('height', height)
+  .node().getContext('2d');
+
+const image = new Image();
+image.src = 'data:image/svg+xml,' + encodeURIComponent(androidSvg);
+image.onload = function() {
+  context.drawImage(image, 0, 0, width, height);
+
+  const pixels = context.getImageData(0, 0, width, height);
+  const data = pixels.data;
+
+  const points = [];
+  for (let y = 0; y < height; y += 4) {
+    for (let x = 0; x < width; x += 4) {
+      const i = (y * width + x) * 4;
+      const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3; // Promedio de RGB
+      if (brightness > 128) { // Solo puntos en áreas claras
+        points.push([x, y]);
+      }
+    }
+  }
+
+  const delaunay = d3.Delaunay.from(points);
+  const voronoi = delaunay.voronoi([0, 0, width, height]);
+
+  blogSvg.selectAll('path')
+    .data(voronoi.cellPolygons())
+    .enter()
+    .append('path')
+    .attr('d', d => "M" + d.join("L") + "Z")
+    .attr('fill', 'none')
+    .attr('stroke', '#00d4ff')
+    .attr('stroke-width', 0.5);
+
+  blogSvg.selectAll('circle')
+    .data(points)
+    .enter()
+    .append('circle')
+    .attr('cx', d => d[0])
+    .attr('cy', d => d[1])
+    .attr('r', 1)
+    .attr('fill', '#00d4ff');
+};
 
 function blogTicked() {
   console.log('Blog simulation ticked'); // Depuración
-  blogNodes
-    .attr('cx', d => Math.max(2, Math.min(blogWidth - 2, d.x)))
-    .attr('cy', d => Math.max(2, Math.min(blogHeight - 2, d.y)));
 }
-
-blogSvg.on('mousemove', function(event) {
-  const [mx, my] = d3.pointer(event);
-  blogPoints.forEach(d => {
-    const dx = d.x - mx;
-    const dy = d.y - my;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-    if (dist < 50) {
-      d.vx += (dx / dist) * 5;
-      d.vy += (dy / dist) * 5;
-    }
-  });
-  blogSimulation.alpha(0.3).restart();
-});
 
 // Funciones de arrastre (solo para Tech)
 function dragStarted(event, d) {
