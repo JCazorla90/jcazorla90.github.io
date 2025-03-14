@@ -65,7 +65,17 @@ const techData = [
   { name: 'Jenkins', url: 'https://www.jenkins.io', img: 'https://www.vectorlogo.zone/logos/jenkins/jenkins-icon.svg' },
   { name: 'Linux', url: 'https://www.linux.org', img: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/linux/linux-original.svg' },
   { name: 'TensorFlow', url: 'https://www.tensorflow.org', img: 'https://www.vectorlogo.zone/logos/tensorflow/tensorflow-icon.svg' },
-  { name: 'RabbitMQ', url: 'https://www.rabbitmq.com', img: 'https://www.vectorlogo.zone/logos/rabbitmq/rabbitmq-icon.svg' }
+  { name: 'RabbitMQ', url: 'https://www.rabbitmq.com', img: 'https://www.vectorlogo.zone/logos/rabbitmq/rabbitmq-icon.svg' },
+  { name: 'GitLab', url: 'https://about.gitlab.com', img: 'https://www.vectorlogo.zone/logos/gitlab/gitlab-icon.svg' },
+  { name: 'GitHub', url: 'https://github.com', img: 'https://www.vectorlogo.zone/logos/github/github-icon.svg' },
+  { name: 'Terraform', url: 'https://www.terraform.io', img: 'https://www.vectorlogo.zone/logos/terraformio/terraformio-icon.svg' },
+  { name: 'IBM Cloud', url: 'https://www.ibm.com/cloud', img: 'https://www.vectorlogo.zone/logos/ibm_cloud/ibm_cloud-ar21~bgwhite.svg' },
+  { name: 'Splunk', url: 'https://www.splunk.com', img: 'https://www.vectorlogo.zone/logos/splunk/splunk-ar21~bgwhite.svg' },
+  { name: 'Elastic', url: 'https://www.elastic.co', img: 'https://www.vectorlogo.zone/logos/elastic/elastic-icon.svg' },
+  { name: 'Argo', url: 'https://argoproj.github.io', img: 'https://www.vectorlogo.zone/logos/argoprojio/argoprojio-icon.svg' },
+  { name: 'Apache Hadoop', url: 'https://hadoop.apache.org', img: 'https://www.vectorlogo.zone/logos/apache_hadoop/apache_hadoop-icon.svg' },
+  { name: 'Zabbix', url: 'https://www.zabbix.com', img: 'https://www.vectorlogo.zone/logos/zabbix/zabbix-icon.svg' },
+  { name: 'Ansible', url: 'https://www.ansible.com', img: 'https://www.vectorlogo.zone/logos/ansible/ansible-icon.svg' }
 ];
 
 const techSimulation = d3.forceSimulation(techData)
