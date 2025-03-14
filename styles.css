@@ -81,7 +81,7 @@ h2 {
   font-weight: 700;
 }
 
-.about-content, .projects-grid {
+.about-content, .projects-grid, .blog-posts {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
@@ -141,26 +141,36 @@ h2 {
   text-align: center;
 }
 
-.blog-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-}
-
-#blog-svg {
-  background: rgba(0, 123, 255, 0.1);
-  border-radius: 8px;
-  display: block;
-  width: 300px;
-  height: 300px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.android-pointing {
-  width: 150px;
-  height: auto;
+.blog-posts {
   margin-top: 20px;
+}
+
+.blog-card {
+  background: #2e2e4d;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.blog-card:hover {
+  transform: translateY(-5px);
+}
+
+.blog-card h3 {
+  color: #007bff;
+  margin-top: 0;
+  font-size: 1.5em;
+}
+
+.blog-card h3 a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.blog-card p {
+  margin: 10px 0 0;
+  font-size: 0.9em;
 }
 
 .project-card {
@@ -263,10 +273,8 @@ footer {
   header h1 { font-size: 2em; }
   header h3 { font-size: 1em; }
   h2 { font-size: 1.5em; }
-  .project-card { width: 100%; }
+  .project-card, .blog-card { width: 100%; }
   #tech-svg { height: 200px; }
-  .blog-container { flex-direction: column; }
-  .android-pointing { width: 100px; }
   #mage-sprite { width: 24px; height: 36px; }
   .yoda-gif { width: 150px; }
 }
