@@ -5,7 +5,7 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const particlesArray = [];
-const numberOfParticles = 50; // Reducimos para un look más profesional
+const numberOfParticles = 50;
 
 class Particle {
   constructor() {
@@ -158,7 +158,7 @@ image.onload = function() {
     for (let x = 0; x < width; x += 2) {
       const i = (y * width + x) * 4;
       const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3;
-      if (brightness > 100) { // Ajustamos umbral para capturar mejor el androide
+      if (brightness > 100) {
         points.push([x, y]);
       }
     }
