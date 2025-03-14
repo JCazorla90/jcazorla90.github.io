@@ -127,6 +127,12 @@ h2 {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+.android-pointing {
+  width: 150px;
+  height: auto;
+  margin-top: 20px;
+}
+
 .project-card {
   background: #2e2e4d;
   padding: 20px;
@@ -181,13 +187,13 @@ h2 {
 
 #mage-sprite {
   position: absolute;
-  width: 32px; /* Ajustado al tamaño del sprite */
-  height: 48px; /* Ajustado al tamaño del sprite */
+  width: 32px;
+  height: 48px;
   animation: moveMage 10s infinite linear;
   background: none;
   padding: 0;
   box-shadow: none;
-  image-rendering: pixelated; /* Mantiene el estilo pixelart nítido */
+  image-rendering: pixelated;
 }
 
 @keyframes moveMage {
@@ -230,6 +236,7 @@ footer {
   .project-card { width: 100%; }
   #tech-svg { height: 200px; }
   .blog-container { flex-direction: column; }
+  .android-pointing { width: 100px; }
   #mage-sprite { width: 24px; height: 36px; }
   .yoda-gif { width: 150px; }
 }
