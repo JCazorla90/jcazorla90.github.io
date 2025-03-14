@@ -106,87 +106,69 @@ techSvg.on('mousemove', function(event) {
     const dy = d.y - my;
     const dist = Math.sqrt(dx * dx + dy * dy);
     if (dist < 100) {
-      d.vx += (dx / dist) * 10; // Aumentar la fuerza de repulsión
+      d.vx += (dx / dist) * 10;
       d.vy += (dy / dist) * 10;
     }
   });
-  techSimulation.alpha(0.3).restart(); // Reiniciar la simulación para aplicar los cambios
+  techSimulation.alpha(0.3).restart();
 });
 
 function techTicked() {
   techNodes.attr('transform', d => `translate(${Math.max(20, Math.min(techWidth - 20, d.x))},${Math.max(20, Math.min(techHeight - 20, d.y))})`);
 }
 
-// D3.js Force Simulation para Connect
-const connectSvg = d3.select('#connect-svg');
-const connectWidth = connectSvg.node().getBoundingClientRect().width;
-const connectHeight = 200;
+// D3.js Voronoi Stippling para Blog
+const blogSvg = d3.select('#blog-svg');
+const blogWidth = 300;
+const blogHeight = 200;
 
-const connectData = [
-  { name: 'Twitter', url: 'https://twitter.com/jcazorla90', img: 'https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/twitter.svg' },
-  { name: 'LinkedIn', url: 'https://linkedin.com/in/jose-cazorla-gijón', img: 'https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg' },
-  { name: 'Dev.to', url: 'https://dev.to/jcazorla90', img: 'https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/dev-dot-to.svg' },
-  { name: 'CodePen', url: 'https://codepen.io/jcazorla90', img: 'https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/codepen.svg' },
-  { name: 'Stack Overflow', url: 'https://stackoverflow.com/users/tipodeincognito', img: 'https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/stack-overflow.svg' }
-];
+const blogPoints = d3.range(100).map(() => ({
+  x: Math.random() * blogWidth,
+  y: Math.random() * blogHeight,
+  vx: (Math.random() - 0.5) * 2,
+  vy: (Math.random() - 0.5) * 2
+}));
 
-const connectSimulation = d3.forceSimulation(connectData)
-  .force('charge', d3.forceManyBody().strength(-100))
-  .force('center', d3.forceCenter(connectWidth / 2, connectHeight / 2))
-  .force('collision', d3.forceCollide().radius(50))
-  .force('x', d3.forceX(connectWidth / 2).strength(0.05))
-  .force('y', d3.forceY(connectHeight / 2).strength(0.05))
-  .on('tick', connectTicked);
+const blogSimulation = d3.forceSimulation(blogPoints)
+  .force('collide', d3.forceCollide().radius(3))
+  .force('x', d3.forceX(d => d.x).strength(0.1))
+  .force('y', d3.forceY(d => d.y).strength(0.1))
+  .on('tick', blogTicked);
 
-const connectNodes = connectSvg.selectAll('g')
-  .data(connectData)
+const blogNodes = blogSvg.selectAll('circle')
+  .data(blogPoints)
   .enter()
-  .append('g')
-  .call(d3.drag()
-    .on('start', dragStarted)
-    .on('drag', dragged)
-    .on('end', dragEnded));
+  .append('circle')
+  .attr('r', 2)
+  .attr('fill', '#00d4ff');
 
-connectNodes.append('a')
-  .attr('xlink:href', d => d.url)
-  .attr('target', '_blank')
-  .append('image')
-  .attr('xlink:href', d => d.img)
-  .attr('width', 40)
-  .attr('height', 40)
-  .attr('x', -20)
-  .attr('y', -20);
+function blogTicked() {
+  blogNodes
+    .attr('cx', d => Math.max(2, Math.min(blogWidth - 2, d.x)))
+    .attr('cy', d => Math.max(2, Math.min(blogHeight - 2, d.y)));
+}
 
-connectNodes.append('text')
-  .attr('dy', '30')
-  .attr('text-anchor', 'middle')
-  .style('fill', '#e0e0e0')
-  .style('font-size', '12px')
-  .text(d => d.name);
+const voronoi = d3.voronoi()
+  .extent([[0, 0], [blogWidth, blogHeight]]);
 
-connectSvg.on('mousemove', function(event) {
+blogSvg.on('mousemove', function(event) {
   const [mx, my] = d3.pointer(event);
-  connectData.forEach(d => {
+  blogPoints.forEach(d => {
     const dx = d.x - mx;
     const dy = d.y - my;
     const dist = Math.sqrt(dx * dx + dy * dy);
-    if (dist < 100) {
-      d.vx += (dx / dist) * 10;
-      d.vy += (dy / dist) * 10;
+    if (dist < 50) {
+      d.vx += (dx / dist) * 5;
+      d.vy += (dy / dist) * 5;
     }
   });
-  connectSimulation.alpha(0.3).restart();
+  blogSimulation.alpha(0.3).restart();
 });
 
-function connectTicked() {
-  connectNodes.attr('transform', d => `translate(${Math.max(20, Math.min(connectWidth - 20, d.x))},${Math.max(20, Math.min(connectHeight - 20, d.y))})`);
-}
-
-// Funciones de arrastre
+// Funciones de arrastre (solo para Tech)
 function dragStarted(event, d) {
   if (!event.active) {
     techSimulation.alphaTarget(0.3).restart();
-    connectSimulation.alphaTarget(0.3).restart();
   }
   d.fx = d.x;
   d.fy = d.y;
@@ -200,7 +182,6 @@ function dragged(event, d) {
 function dragEnded(event, d) {
   if (!event.active) {
     techSimulation.alphaTarget(0);
-    connectSimulation.alphaTarget(0);
   }
   d.fx = null;
   d.fy = null;
@@ -211,11 +192,8 @@ window.addEventListener('resize', () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   const newTechWidth = techSvg.node().getBoundingClientRect().width;
-  const newConnectWidth = connectSvg.node().getBoundingClientRect().width;
   techSimulation.force('center', d3.forceCenter(newTechWidth / 2, techHeight / 2));
-  connectSimulation.force('center', d3.forceCenter(newConnectWidth / 2, connectHeight / 2));
   techSimulation.alpha(1).restart();
-  connectSimulation.alpha(1).restart();
 });
 
 initParticles();
