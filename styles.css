@@ -18,11 +18,12 @@ body {
 header {
   text-align: center;
   padding: 60px 0;
-  background: url('https://media.giphy.com/media/3o7TKsQ8k8tILvRtgI/giphy.gif') no-repeat center;
+  background: url('https://media.giphy.com/media/xT5LMWvjJ4w9qJ6z3W/giphy.gif') no-repeat center center;
   background-size: cover;
   border-bottom: 2px solid #007bff;
   position: relative;
   overflow: hidden;
+  min-height: 300px; /* Asegura que el fondo sea visible */
 }
 
 header h1 {
@@ -277,4 +278,5 @@ footer {
   #tech-svg { height: 200px; }
   #mage-sprite { width: 24px; height: 36px; }
   .yoda-gif { width: 150px; }
+  header { min-height: 200px; }
 }
