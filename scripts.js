@@ -135,43 +135,59 @@ function dragEnded(event, d) {
   d.fy = null;
 }
 
-// Cargar las últimas entradas del blog desde el feed JSON
-function loadBlogPosts(json) {
-  const blogPostsContainer = document.getElementById('blog-posts');
-  if (!json.feed.entry) {
-    blogPostsContainer.innerHTML = '<p>No se encontraron entradas recientes.</p>';
-    return;
-  }
-
-  const entries = json.feed.entry.slice(0, 3); // Aseguramos solo 3 entradas
-  entries.forEach(entry => {
-    // Obtener el título
-    const title = entry.title.$t;
-
-    // Obtener el enlace (buscamos el enlace con rel="alternate")
-    let link = '';
-    for (let j = 0; j < entry.link.length; j++) {
-      if (entry.link[j].rel === 'alternate') {
-        link = entry.link[j].href;
-        break;
+// Cargar las últimas entradas del blog usando un proxy para evitar CORS
+document.addEventListener('DOMContentLoaded', () => {
+  const blogFeedUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent('https://lamazmorradeliandroide.blogspot.com/feeds/posts/default?alt=json&max-results=3');
+  
+  fetch(blogFeedUrl)
+    .then(response => response.json())
+    .then(data => {
+      const json = JSON.parse(data.contents);
+      const blogPostsContainer = document.getElementById('blog-posts');
+      if (!json.feed.entry) {
+        blogPostsContainer.innerHTML = '<p>No se encontraron entradas recientes.</p>';
+        return;
       }
-    }
 
-    // Obtener un extracto del contenido (si existe)
-    const summary = entry.summary ? entry.summary.$t : 'Sin descripción disponible.';
-    const maxLength = 100; // Límite de caracteres para el extracto
-    let shortSummary = summary.length > maxLength ? summary.substring(0, maxLength) + '...' : summary;
+      const entries = json.feed.entry.slice(0, 3); // Aseguramos solo 3 entradas
+      entries.forEach(entry => {
+        // Obtener el título
+        const title = entry.title.$t;
 
-    // Crear la tarjeta del blog
-    const blogCard = document.createElement('div');
-    blogCard.className = 'blog-card';
-    blogCard.innerHTML = `
-      <h3><a href="${link}" target="_blank">${title}</a></h3>
-      <p>${shortSummary}</p>
-    `;
-    blogPostsContainer.appendChild(blogCard);
-  });
-}
+        // Obtener el enlace (buscamos el enlace con rel="alternate")
+        let link = '';
+        for (let j = 0; j < entry.link.length; j++) {
+          if (entry.link[j].rel === 'alternate') {
+            link = entry.link[j].href;
+            break;
+          }
+        }
+
+        // Obtener un extracto del contenido (si existe)
+        const summary = entry.summary ? entry.summary.$t : 'Sin descripción disponible.';
+        // Limpiar HTML del extracto
+        const div = document.createElement('div');
+        div.innerHTML = summary;
+        const cleanSummary = div.textContent || div.innerText || '';
+        const maxLength = 100; // Límite de caracteres para el extracto
+        const shortSummary = cleanSummary.length > maxLength ? cleanSummary.substring(0, maxLength) + '...' : cleanSummary;
+
+        // Crear la tarjeta del blog
+        const blogCard = document.createElement('div');
+        blogCard.className = 'blog-card';
+        blogCard.innerHTML = `
+          <h3><a href="${link}" target="_blank">${title}</a></h3>
+          <p>${shortSummary}</p>
+        `;
+        blogPostsContainer.appendChild(blogCard);
+      });
+    })
+    .catch(error => {
+      console.error('Error al cargar las entradas del blog:', error);
+      const blogPostsContainer = document.getElementById('blog-posts');
+      blogPostsContainer.innerHTML = '<p>Error al cargar las entradas del blog. Intenta de nuevo más tarde.</p>';
+    });
+});
 
 // Inicializar y animar
 window.addEventListener('resize', () => {
