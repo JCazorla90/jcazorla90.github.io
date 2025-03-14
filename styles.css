@@ -57,24 +57,58 @@ h2 {
   margin: 10px;
 }
 
-#tech, #connect {
+#tech {
   text-align: center;
 }
 
-#tech-svg, #connect-svg {
+#tech-svg {
   display: block;
   margin: 0 auto;
   background: rgba(0, 0, 0, 0.2);
   border-radius: 10px;
 }
 
+#connect {
+  text-align: center;
+}
+
+.connect-icons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.connect-icons a img {
+  width: 40px;
+  height: 40px;
+  transition: transform 0.3s ease;
+}
+
+.connect-icons a img:hover {
+  transform: scale(1.2);
+}
+
 #blog {
   text-align: center;
 }
 
-.android-pointing {
+.blog-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+}
+
+.bender-pointing {
   width: 150px;
   animation: point 2s infinite;
+}
+
+#blog-svg {
+  background: rgba(0, 212, 255, 0.1);
+  border-radius: 10px;
 }
 
 @keyframes point {
@@ -129,5 +163,6 @@ footer img {
   header h3 { font-size: 1.2em; }
   h2 { font-size: 1.5em; }
   .projects .project-card { width: 100%; }
-  #tech-svg, #connect-svg { height: 200px; }
+  #tech-svg { height: 200px; }
+  .blog-container { flex-direction: column; }
 }
