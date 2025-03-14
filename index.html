@@ -3,44 +3,47 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jose Cazorla - Base Estelar</title>
+  <title>Jose Cazorla - Portafolio</title>
   <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://d3js.org/d3.v7.min.js"></script>
-  <script src="https://unpkg.com/d3-delaunay@6"></script> <!-- Añadimos d3-delaunay -->
+  <script src="https://unpkg.com/d3-delaunay@6"></script>
 </head>
 <body>
   <canvas id="particles"></canvas>
   <header>
     <div class="container">
-      <h1>🚀 Base Estelar de Jose Cazorla 👾</h1>
-      <h3>Apasionado por las Nuevas Tecnologías y el Universo DevSecOps</h3>
+      <h1>Jose Cazorla</h1>
+      <h3>Especialista en Tecnologías y DevSecOps</h3>
     </div>
   </header>
 
   <section id="about">
     <div class="container">
-      <h2>🌌 Sobre mí</h2>
-      <div class="about">
-        <p>¡Saludos, viajero espacial! Soy <strong>Jose Cazorla</strong>, un ingeniero del caos y padawan del código, explorando los confines del desarrollo, la seguridad y las operaciones. Mi misión: construir sistemas robustos mientras navego por galaxias de datos y microservicios.</p>
-        <p>- 🔭 <strong>Misión Actual</strong>: Trabajando en proyectos propios desde mi laboratorio secreto.</p>
-        <p>- 🌱 <strong>Entrenamiento Jedi</strong>: Estudiando <strong>IA & Blockchain</strong> para dominar la fuerza.</p>
-        <p>- 📡 <strong>Transmisiones</strong>: Conecta conmigo en <a href="https://www.linkedin.com/in/jose-cazorla-gijón/" target="_blank">LinkedIn</a> o revisa mis crónicas en <a href="https://app.gitbook.com/o/k7QYsShdQGtU4A4BIIYh/s/hRWvJhDe1Y2Q8p4jQGqV/" target="_blank">GitBook</a> (en construcción, como toda buena Estrella de la Muerte).</p>
+      <h2>Sobre Mí</h2>
+      <div class="about-content">
+        <p>Soy Jose Cazorla, ingeniero con experiencia en desarrollo, seguridad y operaciones. Mi enfoque está en construir sistemas robustos y escalables, explorando áreas como IA y Blockchain.</p>
+        <ul>
+          <li><strong>Misión Actual:</strong> Proyectos propios desde mi laboratorio.</li>
+          <li><strong>Formación:</strong> Especialización en IA y Blockchain.</li>
+          <li><strong>Contacto:</strong> <a href="https://www.linkedin.com/in/jose-cazorla-gijón/" target="_blank">LinkedIn</a> | <a href="https://app.gitbook.com/o/k7QYsShdQGtU4A4BIIYh/s/hRWvJhDe1Y2Q8p4jQGqV/" target="_blank">GitBook</a></li>
+        </ul>
       </div>
     </div>
   </section>
 
   <section id="tech">
     <div class="container">
-      <h2>🖥️ Arsenal Tecnológico</h2>
-      <p>Mis herramientas son como el cinturón de Batman o el inventario de un RPG: siempre listas para la acción.</p>
+      <h2>Tecnologías</h2>
+      <p>Mis herramientas principales para desarrollo y operaciones.</p>
       <svg id="tech-svg" width="100%" height="300"></svg>
     </div>
   </section>
 
   <section id="connect">
     <div class="container">
-      <h2>📡 Conecta con la Red</h2>
-      <p>Únete a mi tripulación interestelar:</p>
+      <h2>Conexión</h2>
+      <p>Únete a mi red profesional:</p>
       <div class="connect-icons">
         <a href="https://twitter.com/jcazorla90" target="_blank"><img src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/twitter.svg" alt="Twitter" width="40" height="40"/></a>
         <a href="https://linkedin.com/in/jose-cazorla-gijón" target="_blank"><img src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="LinkedIn" width="40" height="40"/></a>
@@ -53,21 +56,21 @@
 
   <section id="blog">
     <div class="container">
-      <h2>📝 Mi Blog: La Mazmorra del Androide</h2>
-      <p>Explora mis escritos sobre tecnología, IA y más en <a href="https://lamazmorradeliandroide.blogspot.com/" target="_blank">La Mazmorra del Androide</a>.</p>
+      <h2>Blog</h2>
+      <p>Explora mis artículos sobre tecnología e innovación en <a href="https://lamazmorradeliandroide.blogspot.com/" target="_blank">La Mazmorra del Androide</a>.</p>
       <div class="blog-container">
-        <svg id="blog-svg" width="300" height="300"></svg> <!-- Ajustamos altura para el androide -->
+        <svg id="blog-svg" width="300" height="300"></svg>
       </div>
     </div>
   </section>
 
   <section id="projects">
     <div class="container">
-      <h2>🌟 Proyectos Destacados</h2>
-      <div class="projects">
+      <h2>Proyectos</h2>
+      <div class="projects-grid">
         <div class="project-card">
           <h3>Monitor de Microservicios</h3>
-          <p>Un panel en Grafana para visualizar la comunicación entre microservicios con D3.js. (En desarrollo)</p>
+          <p>Panel en Grafana para visualizar comunicación entre microservicios con D3.js (en desarrollo).</p>
           <a href="https://github.com/jcazorla90" target="_blank">Ver en GitHub</a>
         </div>
         <div class="project-card">
@@ -81,18 +84,21 @@
 
   <section id="stats">
     <div class="container">
-      <h2>🎮 Stats de Jugador</h2>
-      <div class="stats">
-        <img src="https://github-readme-stats.vercel.app/api?username=jcazorla90&show_icons=true&theme=radical&locale=en" alt="GitHub Stats" />
-        <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=jcazorla90&layout=compact&theme=radical" alt="Top Languages" />
+      <h2>Estadísticas</h2>
+      <div class="stats-grid">
+        <div class="stats-wrapper">
+          <img src="https://github-readme-stats.vercel.app/api?username=jcazorla90&show_icons=true&theme=radical&locale=en" alt="GitHub Stats" />
+          <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=jcazorla90&layout=compact&theme=radical" alt="Top Languages" />
+          <img id="mage-sprite" src="https://static.wikia.nocookie.net/finalfantasy/images/0/0d/BlackMage-ff1-psp.png" alt="Mage Sprite" />
+        </div>
       </div>
     </div>
   </section>
 
   <footer>
     <div class="container">
-      <p>"Que el código te acompañe, y que tus pipelines siempre sean verdes."</p>
-      <img src="https://media.giphy.com/media/r3knno4y8phhC/giphy.gif?cid=ecf05e47p4k7zzkvmsfnx8gt5316ruc2ie7bxl6wjlck7wol&ep=v1_gifs_search&rid=giphy.gif&ct=g" width="150" alt="Baby Yoda GIF" />
+      <p>"Que el código te guíe hacia la excelencia."</p>
+      <img src="https://media.giphy.com/media/r3knno4y8phhC/giphy.gif?cid=ecf05e47p4k7zzkvmsfnx8gt5316ruc2ie7bxl6wjlck7wol&ep=v1_gifs_search&rid=giphy.gif&ct=g" alt="Baby Yoda GIF" class="yoda-gif" />
     </div>
   </footer>
 
