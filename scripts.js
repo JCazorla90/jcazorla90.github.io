@@ -5,23 +5,23 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const particlesArray = [];
-const numberOfParticles = 100;
+const numberOfParticles = 50; // Reducimos para un look más profesional
 
 class Particle {
   constructor() {
     this.x = Math.random() * canvas.width;
     this.y = Math.random() * canvas.height;
-    this.size = Math.random() * 5 + 1;
-    this.speedX = Math.random() * 3 - 1.5;
-    this.speedY = Math.random() * 3 - 1.5;
+    this.size = Math.random() * 3 + 1;
+    this.speedX = Math.random() * 1.5 - 0.75;
+    this.speedY = Math.random() * 1.5 - 0.75;
   }
   update() {
     this.x += this.speedX;
     this.y += this.speedY;
-    if (this.size > 0.2) this.size -= 0.1;
+    if (this.size > 0.2) this.size -= 0.05;
   }
   draw() {
-    ctx.fillStyle = 'rgba(0, 212, 255, 0.8)';
+    ctx.fillStyle = 'rgba(0, 123, 255, 0.5)';
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
     ctx.fill();
@@ -117,7 +117,7 @@ function techTicked() {
   techNodes.attr('transform', d => `translate(${Math.max(20, Math.min(techWidth - 20, d.x))},${Math.max(20, Math.min(techHeight - 20, d.y))})`);
 }
 
-// Voronoi Stippling para Blog (adaptado de ObservableHQ)
+// Voronoi Stippling para Blog
 const blogSvg = d3.select('#blog-svg');
 const width = 300;
 const height = 300;
@@ -125,12 +125,12 @@ const height = 300;
 const androidSvg = `
 <svg width="300" height="300" viewBox="0 0 100 100">
   <g transform="translate(50, 50)">
-    <circle cx="0" cy="-20" r="20" fill="#00d4ff" /> <!-- Cabeza -->
-    <rect x="-15" y="0" width="30" height="40" fill="#00d4ff" /> <!-- Cuerpo -->
-    <line x1="-10" y1="0" x2="-10" y2="-20" stroke="#00d4ff" stroke-width="5" /> <!-- Brazo izquierdo -->
-    <line x1="10" y1="0" x2="10" y2="-20" stroke="#00d4ff" stroke-width="5" /> <!-- Brazo derecho -->
-    <line x1="-10" y1="40" x2="-20" y2="60" stroke="#00d4ff" stroke-width="5" /> <!-- Pierna izquierda -->
-    <line x1="10" y1="40" x2="20" y2="60" stroke="#00d4ff" stroke-width="5" /> <!-- Pierna derecha -->
+    <circle cx="0" cy="-20" r="20" fill="#00d4ff" />
+    <rect x="-15" y="0" width="30" height="40" fill="#00d4ff" />
+    <line x1="-10" y1="0" x2="-10" y2="-20" stroke="#00d4ff" stroke-width="5" />
+    <line x1="10" y1="0" x2="10" y2="-20" stroke="#00d4ff" stroke-width="5" />
+    <line x1="-10" y1="40" x2="-20" y2="60" stroke="#00d4ff" stroke-width="5" />
+    <line x1="10" y1="40" x2="20" y2="60" stroke="#00d4ff" stroke-width="5" />
   </g>
 </svg>
 `;
@@ -140,6 +140,9 @@ blogSvg.html(androidSvg);
 const context = d3.select('#blog-svg').append('canvas')
   .attr('width', width)
   .attr('height', height)
+  .style('position', 'absolute')
+  .style('top', 0)
+  .style('left', 0)
   .node().getContext('2d');
 
 const image = new Image();
@@ -151,11 +154,11 @@ image.onload = function() {
   const data = pixels.data;
 
   const points = [];
-  for (let y = 0; y < height; y += 4) {
-    for (let x = 0; x < width; x += 4) {
+  for (let y = 0; y < height; y += 2) {
+    for (let x = 0; x < width; x += 2) {
       const i = (y * width + x) * 4;
-      const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3; // Promedio de RGB
-      if (brightness > 128) { // Solo puntos en áreas claras
+      const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3;
+      if (brightness > 100) { // Ajustamos umbral para capturar mejor el androide
         points.push([x, y]);
       }
     }
@@ -170,7 +173,7 @@ image.onload = function() {
     .append('path')
     .attr('d', d => "M" + d.join("L") + "Z")
     .attr('fill', 'none')
-    .attr('stroke', '#00d4ff')
+    .attr('stroke', '#007bff')
     .attr('stroke-width', 0.5);
 
   blogSvg.selectAll('circle')
@@ -180,18 +183,12 @@ image.onload = function() {
     .attr('cx', d => d[0])
     .attr('cy', d => d[1])
     .attr('r', 1)
-    .attr('fill', '#00d4ff');
+    .attr('fill', '#007bff');
 };
-
-function blogTicked() {
-  console.log('Blog simulation ticked'); // Depuración
-}
 
 // Funciones de arrastre (solo para Tech)
 function dragStarted(event, d) {
-  if (!event.active) {
-    techSimulation.alphaTarget(0.3).restart();
-  }
+  if (!event.active) techSimulation.alphaTarget(0.3).restart();
   d.fx = d.x;
   d.fy = d.y;
 }
@@ -202,9 +199,7 @@ function dragged(event, d) {
 }
 
 function dragEnded(event, d) {
-  if (!event.active) {
-    techSimulation.alphaTarget(0);
-  }
+  if (!event.active) techSimulation.alphaTarget(0);
   d.fx = null;
   d.fy = null;
 }
@@ -220,4 +215,4 @@ window.addEventListener('resize', () => {
 
 initParticles();
 animateParticles();
-console.log('Scripts loaded'); // Depuración
+console.log('Scripts loaded');
