@@ -69,9 +69,11 @@ const techData = [
 ];
 
 const techSimulation = d3.forceSimulation(techData)
-  .force('charge', d3.forceManyBody().strength(-50))
+  .force('charge', d3.forceManyBody().strength(-100))
   .force('center', d3.forceCenter(techWidth / 2, techHeight / 2))
-  .force('collision', d3.forceCollide().radius(40))
+  .force('collision', d3.forceCollide().radius(50))
+  .force('x', d3.forceX(techWidth / 2).strength(0.05))
+  .force('y', d3.forceY(techHeight / 2).strength(0.05))
   .on('tick', techTicked);
 
 const techNodes = techSvg.selectAll('g')
@@ -104,14 +106,15 @@ techSvg.on('mousemove', function(event) {
     const dy = d.y - my;
     const dist = Math.sqrt(dx * dx + dy * dy);
     if (dist < 100) {
-      d.vx += dx / dist * 5;
-      d.vy += dy / dist * 5;
+      d.vx += (dx / dist) * 10; // Aumentar la fuerza de repulsión
+      d.vy += (dy / dist) * 10;
     }
   });
+  techSimulation.alpha(0.3).restart(); // Reiniciar la simulación para aplicar los cambios
 });
 
 function techTicked() {
-  techNodes.attr('transform', d => `translate(${d.x},${d.y})`);
+  techNodes.attr('transform', d => `translate(${Math.max(20, Math.min(techWidth - 20, d.x))},${Math.max(20, Math.min(techHeight - 20, d.y))})`);
 }
 
 // D3.js Force Simulation para Connect
@@ -128,9 +131,11 @@ const connectData = [
 ];
 
 const connectSimulation = d3.forceSimulation(connectData)
-  .force('charge', d3.forceManyBody().strength(-50))
+  .force('charge', d3.forceManyBody().strength(-100))
   .force('center', d3.forceCenter(connectWidth / 2, connectHeight / 2))
-  .force('collision', d3.forceCollide().radius(40))
+  .force('collision', d3.forceCollide().radius(50))
+  .force('x', d3.forceX(connectWidth / 2).strength(0.05))
+  .force('y', d3.forceY(connectHeight / 2).strength(0.05))
   .on('tick', connectTicked);
 
 const connectNodes = connectSvg.selectAll('g')
@@ -166,14 +171,15 @@ connectSvg.on('mousemove', function(event) {
     const dy = d.y - my;
     const dist = Math.sqrt(dx * dx + dy * dy);
     if (dist < 100) {
-      d.vx += dx / dist * 5;
-      d.vy += dy / dist * 5;
+      d.vx += (dx / dist) * 10;
+      d.vy += (dy / dist) * 10;
     }
   });
+  connectSimulation.alpha(0.3).restart();
 });
 
 function connectTicked() {
-  connectNodes.attr('transform', d => `translate(${d.x},${d.y})`);
+  connectNodes.attr('transform', d => `translate(${Math.max(20, Math.min(connectWidth - 20, d.x))},${Math.max(20, Math.min(connectHeight - 20, d.y))})`);
 }
 
 // Funciones de arrastre
@@ -204,10 +210,12 @@ function dragEnded(event, d) {
 window.addEventListener('resize', () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
-  techWidth = techSvg.node().getBoundingClientRect().width;
-  connectWidth = connectSvg.node().getBoundingClientRect().width;
-  techSimulation.force('center', d3.forceCenter(techWidth / 2, techHeight / 2));
-  connectSimulation.force('center', d3.forceCenter(connectWidth / 2, connectHeight / 2));
+  const newTechWidth = techSvg.node().getBoundingClientRect().width;
+  const newConnectWidth = connectSvg.node().getBoundingClientRect().width;
+  techSimulation.force('center', d3.forceCenter(newTechWidth / 2, techHeight / 2));
+  connectSimulation.force('center', d3.forceCenter(newConnectWidth / 2, connectHeight / 2));
+  techSimulation.alpha(1).restart();
+  connectSimulation.alpha(1).restart();
 });
 
 initParticles();
