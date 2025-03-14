@@ -18,7 +18,7 @@ body {
 header {
   text-align: center;
   padding: 60px 0;
-  background: url('header-background.gif') no-repeat center;
+  background: url('https://media.giphy.com/media/3o7TKsQ8k8tILvRtgI/giphy.gif') no-repeat center;
   background-size: cover;
   border-bottom: 2px solid #007bff;
   position: relative;
@@ -30,6 +30,36 @@ header h1 {
   margin: 0;
   color: #ffffff;
   text-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.rocket {
+  display: inline-block;
+  animation: rocketLaunch 2s infinite ease-in-out;
+}
+
+@keyframes rocketLaunch {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0); }
+}
+
+.base-text {
+  display: inline-block;
+  animation: slideText 5s infinite linear;
+}
+
+@keyframes slideText {
+  0% { transform: translateX(-50px); }
+  50% { transform: translateX(50px); }
+  100% { transform: translateX(-50px); }
+}
+
+.alien {
+  display: inline-block;
 }
 
 header h3 {
